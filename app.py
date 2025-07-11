@@ -1,6 +1,8 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)  # <== 이 줄 꼭 추가
 
 @app.route("/recommend")
 def recommend():
