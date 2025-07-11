@@ -1,8 +1,7 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>MyRoutine.AI</title>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-42DEW2TFH3"></script>
   <script>
@@ -14,6 +13,25 @@
 </head>
 <body>
   <h1>AI 루틴 추천 서비스</h1>
-  <button onclick="gtag('event', 'routine_viewed')">루틴 보기</button>
+  <button onclick="fetchRoutines()">루틴 보기</button>
+  <ul id="routine-list"></ul>
+
+  <script>
+    function fetchRoutines() {
+      fetch('http://localhost:5000/recommend')
+        .then(response => response.json())
+        .then(data => {
+          const list = document.getElementById('routine-list');
+          list.innerHTML = '';
+          data.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = `${item.time} - ${item.activity}`;
+            list.appendChild(li);
+          });
+          gtag('event', 'routine_viewed'); // GA 이벤트
+        })
+        .catch(err => console.error('API 호출 실패:', err));
+    }
+  </script>
 </body>
 </html>
